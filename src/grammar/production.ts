@@ -1,4 +1,4 @@
-// tom-weatherhead/thaw-grammar/src/grammar/production.ts
+// tom-weatherhead/thaw-interpreter-core/src/grammar/production.ts
 
 import { IEqualityComparable, IStringifiable } from 'thaw-common-utilities.ts';
 
