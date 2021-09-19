@@ -101,6 +101,8 @@ export abstract class GrammarBase implements IGrammar {
 	// }
 
 	protected addProduction(lhs: GrammarSymbol, rhs: ProductionRhsElementType[], n = NaN): void {
-		this.productions.push(createProduction(lhs, rhs, Number.isNaN(n) ? (this.productions.length + 1) : n));
+		this.productions.push(
+			createProduction(lhs, rhs, Number.isNaN(n) ? this.productions.length + 1 : n)
+		);
 	}
 }
