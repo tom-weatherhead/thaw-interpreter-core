@@ -5,6 +5,7 @@ import {
 	IGrammar,
 	IProduction,
 	IToken,
+	LexicalAnalyzerSelector,
 	ParserSelector,
 	ProductionRhsElementType,
 	SemanticStackType
@@ -30,7 +31,19 @@ export abstract class GrammarBase implements IGrammar {
 
 	public abstract get languageName(): string; // This is a 'get' accessor.
 
-	public abstract get selectorsOfCompatibleParsers(): ParserSelector[]; // This is a 'get' accessor.
+	public get defaultLexicalAnalyzer(): LexicalAnalyzerSelector {
+		return LexicalAnalyzerSelector.MidnightHack;
+	}
+
+	public get defaultParser(): ParserSelector {
+		return ParserSelector.LL1;
+	}
+
+	// public abstract get selectorsOfCompatibleParsers(): ParserSelector[]; // This is a 'get' accessor.
+
+	public get selectorsOfCompatibleParsers(): ParserSelector[] {
+		return [this.defaultParser];
+	}
 
 	public abstract executeSemanticAction(semanticStack: SemanticStackType, action: string): void;
 
