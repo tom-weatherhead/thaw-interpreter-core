@@ -1,6 +1,6 @@
 // tom-weatherhead/thaw-interpreter-core/src/exceptions/grammar.ts
 
-import { ExceptionBase } from './exception-base';
+import { ExceptionBase } from './base';
 
 export class GrammarException extends ExceptionBase {
 	constructor(message: string, line = 0, column = 0) {
