@@ -6,10 +6,13 @@ import {
 	IProduction,
 	IToken,
 	LexicalAnalyzerSelector,
+	LexicalState,
 	ParserSelector,
 	ProductionRhsElementType,
 	SemanticStackType
 } from 'thaw-interpreter-types';
+
+import { Name } from './name';
 
 import { createProduction } from './production';
 
@@ -29,7 +32,9 @@ export abstract class GrammarBase implements IGrammar {
 
 	protected constructor(public readonly startSymbol: GrammarSymbol) {}
 
-	public abstract get languageName(): string; // This is a 'get' accessor.
+	// 'get' accessors:
+
+	public abstract get languageName(): string;
 
 	public get defaultLexicalAnalyzer(): LexicalAnalyzerSelector {
 		return LexicalAnalyzerSelector.MidnightHack;
@@ -39,49 +44,171 @@ export abstract class GrammarBase implements IGrammar {
 		return ParserSelector.LL1;
 	}
 
-	// public abstract get selectorsOfCompatibleParsers(): ParserSelector[]; // This is a 'get' accessor.
-
 	public get selectorsOfCompatibleParsers(): ParserSelector[] {
 		return [this.defaultParser];
 	}
 
 	public abstract executeSemanticAction(semanticStack: SemanticStackType, action: string): void;
 
-	public abstract tokenToSymbol(token: IToken): GrammarSymbol;
-	// public tokenToSymbol(token: Token): GrammarSymbol {
+	public tokenToSymbol(token: IToken): GrammarSymbol {
+		const tokenValueAsString: string = token.tokenValue as string;
 
-	// 	switch (token.tokenType)
-	// 	{
-	// 		case LexicalState.tokenEOF: return Symbol.terminalEOF;
-	// 		case LexicalState.tokenIntLit: return Symbol.terminalIntegerLiteral;
-	// 		case LexicalState.tokenFltLit: return Symbol.terminalFloatLiteral;
-	// 		case LexicalState.tokenStrLit: return Symbol.terminalStringLiteral;
-	// 		case LexicalState.tokenIdent: return Symbol.terminalID;
-	// 		// case TokenType.T_Assign: return Symbol.T_Assign;
-	// 		// case TokenType.T_Semicolon: return Symbol.T_Semicolon;
-	// 		case LexicalState.tokenLeftBracket: return Symbol.terminalLeftBracket;
-	// 		case LexicalState.tokenRightBracket: return Symbol.terminalRightBracket;
-	// 		case LexicalState.tokenComma: return Symbol.terminalComma;
-	// 		case LexicalState.tokenPlus: return Symbol.terminalPlus;
-	// 		// case TokenType.T_Minus: return Symbol.T_Minus;
+		switch (token.tokenType) {
+			case LexicalState.tokenEOF:
+				return GrammarSymbol.terminalEOF;
+			case LexicalState.tokenIntLit:
+				return GrammarSymbol.terminalIntegerLiteral;
+			case LexicalState.tokenFltLit:
+				return GrammarSymbol.terminalFloatLiteral;
+			case LexicalState.tokenStrLit:
+				return GrammarSymbol.terminalStringLiteral;
+			case LexicalState.tokenPlus:
+				return GrammarSymbol.terminalPlus;
+			case LexicalState.tokenMinus:
+				return GrammarSymbol.terminalMinus;
+			case LexicalState.tokenMult:
+				return GrammarSymbol.terminalMultiply;
+			case LexicalState.tokenDiv:
+				return GrammarSymbol.terminalDivide;
+			case LexicalState.tokenEqual:
+				return GrammarSymbol.terminalEquals;
+			case LexicalState.tokenLess:
+				return GrammarSymbol.terminalLessThan;
+			case LexicalState.tokenGreater:
+				return GrammarSymbol.terminalGreaterThan;
+			case LexicalState.tokenLeftBracket:
+				return GrammarSymbol.terminalLeftBracket;
+			case LexicalState.tokenRightBracket:
+				return GrammarSymbol.terminalRightBracket;
+			case LexicalState.tokenApostrophe:
+				return GrammarSymbol.terminalApostrophe;
+			case LexicalState.tokenComma:
+				return GrammarSymbol.terminalComma;
+			case LexicalState.tokenDollar:
+				return GrammarSymbol.terminalDollar;
+			case LexicalState.tokenOctothorpe:
+				return GrammarSymbol.terminalOctothorpe;
+			case LexicalState.tokenIdent:
+				switch (tokenValueAsString) {
+					case 'define':
+						return GrammarSymbol.terminalDefine;
+					case 'if':
+						return GrammarSymbol.terminalIf;
+					case 'while':
+						return GrammarSymbol.terminalWhile;
+					case 'set':
+						return GrammarSymbol.terminalSet;
+					case 'begin':
+						return GrammarSymbol.terminalBegin;
+					case 'print':
+						return GrammarSymbol.terminalPrint;
+					case 'cond':
+						return GrammarSymbol.terminalCond;
+					case 'let':
+						return GrammarSymbol.terminalLet;
+					case 'let*':
+						return GrammarSymbol.terminalLetStar;
+					case 'random':
+						return GrammarSymbol.terminalRandom;
+					case 'pow':
+						return GrammarSymbol.terminalPow;
+					case 'exp':
+						return GrammarSymbol.terminalExp;
+					case 'ln':
+						return GrammarSymbol.terminalLn;
+					case 'sin':
+						return GrammarSymbol.terminalSin;
+					case 'cos':
+						return GrammarSymbol.terminalCos;
+					case 'tan':
+						return GrammarSymbol.terminalTan;
+					default:
+						return GrammarSymbol.terminalID;
+				}
 
-	// 		// Inference only.
-	// 		// case TokenType.T_Exclamation: return Symbol.T_Exclamation;
-	// 		// case TokenType.T_Variable: return Symbol.T_Variable;
-	// 		// case TokenType.T_2OrBar: return Symbol.T_2OrBar;
+			default:
+				throw new GrammarException(
+					`GrammarBase.tokenToSymbol() : No grammar symbol matches token ${
+						token.tokenType
+					} ${LexicalState[token.tokenType]} (value '${token.tokenValue}')`,
+					token.line,
+					token.column
+				);
+		}
+	}
 
-	// 		default:
-	// 			break;
-	// 	}
+	// public abstract pushTokenOntoSemanticStack(
+	// 	semanticStack: SemanticStackType,
+	// 	tokenAsSymbol: GrammarSymbol,
+	// 	token: IToken
+	// ): void;
 
-	// 	throw new GrammarException(`No grammar symbol matches token ${token.tokenType} ${token.tokenValue}`);
-	// }
-
-	public abstract pushTokenOntoSemanticStack(
+	public pushTokenOntoSemanticStack(
 		semanticStack: SemanticStackType,
 		tokenAsSymbol: GrammarSymbol,
 		token: IToken
-	): void;
+	): void {
+		// const value = token.tokenValue;
+
+		switch (tokenAsSymbol) {
+			case GrammarSymbol.terminalID:
+			case GrammarSymbol.terminalPrint:
+			case GrammarSymbol.terminalPlus:
+			case GrammarSymbol.terminalMinus:
+			case GrammarSymbol.terminalMultiply:
+			case GrammarSymbol.terminalDivide:
+			case GrammarSymbol.terminalEquals:
+			case GrammarSymbol.terminalLessThan:
+			case GrammarSymbol.terminalGreaterThan:
+			case GrammarSymbol.terminalLet:
+			case GrammarSymbol.terminalLetStar:
+			case GrammarSymbol.terminalRandom:
+			case GrammarSymbol.terminalPow:
+			case GrammarSymbol.terminalExp:
+			case GrammarSymbol.terminalLn:
+			case GrammarSymbol.terminalSin:
+			case GrammarSymbol.terminalCos:
+			case GrammarSymbol.terminalTan:
+				// case GrammarSymbol.terminalAtan2:
+				// case GrammarSymbol.terminalFloor:
+				// case GrammarSymbol.terminalThrow:
+				// case GrammarSymbol.terminalStringLessThan:
+				// case GrammarSymbol.terminalStrlen:
+				// case GrammarSymbol.terminalSubstr:
+				// case GrammarSymbol.terminalTypename:
+				semanticStack.push(new Name(token.tokenValue as string, token.line, token.column));
+				break;
+
+			// case GrammarSymbol.terminalIntegerLiteral:
+			// 	break;
+
+			// case GrammarSymbol.terminalFloatLiteral:
+			//     break;
+			//
+			// case GrammarSymbol.terminalStringLiteral:
+			//     break;
+
+			case GrammarSymbol.terminalLeftBracket:
+			case GrammarSymbol.terminalRightBracket:
+			case GrammarSymbol.terminalBegin:
+			case GrammarSymbol.terminalCond:
+			case GrammarSymbol.terminalDefine:
+			case GrammarSymbol.terminalIf:
+			case GrammarSymbol.terminalSet:
+			case GrammarSymbol.terminalWhile:
+			case GrammarSymbol.terminalEOF:
+				// For these terminals, push nothing onto the semantic stack.
+				break;
+
+			default:
+				// break;
+				throw new GrammarException(
+					`pushTokenOntoSemanticStack() : Unexpected tokenAsSymbol ${GrammarSymbol[tokenAsSymbol]} (${tokenAsSymbol})`,
+					token.line,
+					token.column
+				);
+		}
+	}
 
 	public findStartingProduction(): IProduction {
 		const results: IProduction[] = [];
