@@ -148,8 +148,6 @@ export abstract class GrammarBase implements IGrammar {
 		tokenAsSymbol: GrammarSymbol,
 		token: IToken
 	): void {
-		// const value = token.tokenValue;
-
 		switch (tokenAsSymbol) {
 			case GrammarSymbol.terminalID:
 			case GrammarSymbol.terminalPrint:
@@ -169,9 +167,9 @@ export abstract class GrammarBase implements IGrammar {
 			case GrammarSymbol.terminalSin:
 			case GrammarSymbol.terminalCos:
 			case GrammarSymbol.terminalTan:
+			case GrammarSymbol.terminalThrow:
 				// case GrammarSymbol.terminalAtan2:
 				// case GrammarSymbol.terminalFloor:
-				// case GrammarSymbol.terminalThrow:
 				// case GrammarSymbol.terminalStringLessThan:
 				// case GrammarSymbol.terminalStrlen:
 				// case GrammarSymbol.terminalSubstr:
