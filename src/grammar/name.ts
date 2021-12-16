@@ -1,6 +1,6 @@
 // tom-weatherhead/thaw-interpreter-core/src/grammar/name.ts
 
-// import { ArgumentNullException } from '../exceptions/argument-null-exception';
+import { ArgumentException } from '../exceptions/argument';
 
 export class Name {
 	constructor(
@@ -9,8 +9,10 @@ export class Name {
 		public readonly column = 0
 	) {
 		if (!value) {
-			// throw new ArgumentNullException('A Name cannot have a null or empty value', 'value');
-			throw new Error('Name constructor: A Name cannot have a falsy value.');
+			throw new ArgumentException(
+				'Name constructor: A Name cannot have a null or empty value',
+				'value'
+			);
 		}
 	}
 

@@ -2,7 +2,6 @@
 
 import { IStringifiable } from 'thaw-common-utilities.ts';
 
-// export abstract class ExceptionBase implements IStringifiable {
 export abstract class ExceptionBase extends Error implements IStringifiable {
 	public readonly str: string;
 	public readonly line: number;

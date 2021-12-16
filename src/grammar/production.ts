@@ -6,7 +6,6 @@ import { GrammarSymbol, IProduction, ProductionRhsElementType } from 'thaw-inter
 
 // A user-defined type guard. See e.g. https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
 
-// export
 const typenameProduction = 'Production';
 
 export function isProduction(obj: unknown): obj is IProduction {
@@ -53,24 +52,14 @@ class Production implements IEqualityComparable, IProduction, IStringifiable {
 	}
 
 	public equals(other: unknown): boolean {
-		const otherProduction = other as IProduction;
+		// || this.num !== otherProduction.num // Ignore the production number in this equality comparison.
 
-		if (
-			!isProduction(other) ||
-			this.lhs !== otherProduction.lhs ||
-			this.rhs.length !== otherProduction.rhs.length
-		) {
-			//  || this.num !== otherProduction.num // Ignore the production number in this equality comparison.
-			return false;
-		}
-
-		for (let i = 0; i < this.rhs.length; i++) {
-			if (this.rhs[i] !== otherProduction.rhs[i]) {
-				return false;
-			}
-		}
-
-		return true;
+		return (
+			isProduction(other) &&
+			other.lhs === this.lhs &&
+			other.rhs.length === this.rhs.length &&
+			other.rhs.every((obj, i) => obj === this.rhs[i])
+		);
 	}
 
 	public getRHSWithNoSemanticActions(): GrammarSymbol[] {

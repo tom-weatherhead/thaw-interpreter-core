@@ -1,7 +1,7 @@
 {
 	"name": "thaw-interpreter-core",
-	"version": "0.0.3",
-	"description": "thaw-interpreter-core",
+	"version": "0.0.4",
+	"description": "Foundation classes for thaw's interpreter code",
 	"keywords": [
 		"interpreters",
 		"programming languages",
@@ -66,19 +66,19 @@
 		"thaw-common-utilities.ts": "^0.0.11"
 	},
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "^13.0.6",
-		"@types/eslint": "^8.2.0",
-		"@types/node": "^16",
-		"@typescript-eslint/eslint-plugin": "^5.4.0",
-		"@typescript-eslint/parser": "^5.4.0",
-		"@typescript-eslint/typescript-estree": "^5.4.0",
-		"eslint": "^8.3.0",
-		"prettier": "^2.4.1",
-		"rollup": "^2.60.1",
+		"@rollup/plugin-node-resolve": "^13.1.1",
+		"@types/eslint": "^8.2.1",
+		"@types/node": "^17",
+		"@typescript-eslint/eslint-plugin": "^5.7.0",
+		"@typescript-eslint/parser": "^5.7.0",
+		"@typescript-eslint/typescript-estree": "^5.7.0",
+		"eslint": "^8.4.1",
+		"prettier": "^2.5.1",
+		"rollup": "^2.61.1",
 		"rollup-plugin-terser": "^7.0.2",
-		"thaw-interpreter-types": "^0.0.3",
-		"typescript": "^4.5.2",
-		"typescript-eslint-language-service": "^4.1.5"
+		"thaw-interpreter-types": "^0.0.4",
+		"typescript": "^4.5.4",
+		"typescript-eslint-language-service": "^5.0.0"
 	},
 	"// The correct name is bundledDependencies": true,
 	"// The name bundleDependencies is also honoured": true,

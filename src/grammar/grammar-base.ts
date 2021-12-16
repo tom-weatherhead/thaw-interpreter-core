@@ -137,12 +137,6 @@ export abstract class GrammarBase implements IGrammar {
 		}
 	}
 
-	// public abstract pushTokenOntoSemanticStack(
-	// 	semanticStack: SemanticStackType,
-	// 	tokenAsSymbol: GrammarSymbol,
-	// 	token: IToken
-	// ): void;
-
 	public pushTokenOntoSemanticStack(
 		semanticStack: SemanticStackType,
 		tokenAsSymbol: GrammarSymbol,
@@ -199,7 +193,6 @@ export abstract class GrammarBase implements IGrammar {
 				break;
 
 			default:
-				// break;
 				throw new GrammarException(
 					`pushTokenOntoSemanticStack() : Unexpected tokenAsSymbol ${GrammarSymbol[tokenAsSymbol]} (${tokenAsSymbol})`,
 					token.line,
