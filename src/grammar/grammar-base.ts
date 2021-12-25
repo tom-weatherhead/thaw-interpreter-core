@@ -25,6 +25,16 @@ import { GrammarException } from '../exceptions/grammar';
 // T = ISExpression for LISP
 // Then semanticStack: Stack<IExpression<T>>
 
+// TODO? We could move these two functions into a utilities.ts file.
+
+export function isTerminalSymbol(gs: GrammarSymbol): boolean {
+	return gs > GrammarSymbol.Dot && gs <= GrammarSymbol.terminalEOF;
+}
+
+export function isNonTerminalSymbol(gs: GrammarSymbol): boolean {
+	return gs > GrammarSymbol.terminalEOF;
+}
+
 export abstract class GrammarBase implements IGrammar {
 	public readonly terminals: GrammarSymbol[] = [];
 	public readonly nonTerminals: GrammarSymbol[] = [];
@@ -235,5 +245,19 @@ export abstract class GrammarBase implements IGrammar {
 		this.productions.push(
 			createProduction(lhs, rhs, Number.isNaN(n) ? this.productions.length + 1 : n)
 		);
+
+		for (const sym of [lhs, ...rhs]) {
+			if (typeof sym !== 'number' /* || Number.isNaN(sym) */) {
+				continue;
+			}
+
+			if (isTerminalSymbol(sym) && this.terminals.indexOf(sym) < 0) {
+				this.terminals.push(sym);
+			}
+
+			if (isNonTerminalSymbol(sym) && this.nonTerminals.indexOf(sym) < 0) {
+				this.nonTerminals.push(sym);
+			}
+		}
 	}
 }
