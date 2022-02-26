@@ -153,6 +153,12 @@ export abstract class GrammarBase implements IGrammar {
 		token: IToken
 	): void {
 		switch (tokenAsSymbol) {
+			// case GrammarSymbol.terminalAtan2:
+			// case GrammarSymbol.terminalFloor:
+			// case GrammarSymbol.terminalStringLessThan:
+			// case GrammarSymbol.terminalStrlen:
+			// case GrammarSymbol.terminalSubstr:
+			// case GrammarSymbol.terminalTypename:
 			case GrammarSymbol.terminalID:
 			case GrammarSymbol.terminalPrint:
 			case GrammarSymbol.terminalPlus:
@@ -172,12 +178,6 @@ export abstract class GrammarBase implements IGrammar {
 			case GrammarSymbol.terminalCos:
 			case GrammarSymbol.terminalTan:
 			case GrammarSymbol.terminalThrow:
-				// case GrammarSymbol.terminalAtan2:
-				// case GrammarSymbol.terminalFloor:
-				// case GrammarSymbol.terminalStringLessThan:
-				// case GrammarSymbol.terminalStrlen:
-				// case GrammarSymbol.terminalSubstr:
-				// case GrammarSymbol.terminalTypename:
 				semanticStack.push(new Name(token.tokenValue as string, token.line, token.column));
 				break;
 
